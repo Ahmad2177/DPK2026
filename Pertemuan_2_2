@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+char c[3][3] = {{' ', ' ', ' '},{' ', ' ', ' '},{' ', ' ', ' '}};
+
+int main() {
+    int b, k, giliran = 0, langkah = 0;
+    char simbol;
+
+    while (langkah < 9) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++)
+                printf("%c ", c[i][j]);
+            printf("\n");
+        }
+
+        simbol = giliran == 0 ? 'X' : 'O';
+        printf("User %d (%c), masukkan baris kolom: ",
+               giliran + 1, simbol);
+        scanf("%d %d", &b, &k);
+
+        if (b < 1 || b > 3 || k < 1 || k > 3 ||
+            c[b-1][k-1] != ' ') {
+            printf("Koordinat salah atau terisi!\n");
+            continue;
+        }
+
+        c[b-1][k-1] = simbol;
+        langkah++;
+
+        for (int i = 0; i < 3; i++) {
+            if ((c[i][0] == simbol && c[i][1] == simbol &&
+                 c[i][2] == simbol) ||
+                (c[0][i] == simbol && c[1][i] == simbol &&
+                 c[2][i] == simbol))
+                goto menang;
+        }
+
+        if ((c[0][0] == simbol && c[1][1] == simbol &&
+             c[2][2] == simbol) ||
+            (c[0][2] == simbol && c[1][1] == simbol &&
+             c[2][0] == simbol))
+            goto menang;
+
+        giliran = 1 - giliran;
+        continue;
+
+    menang:
+        printf("User %d MENANG!\n", giliran + 1);
+        return 0;
+    }
+
+    printf("SERI!\n");
+    return 0;
+}
